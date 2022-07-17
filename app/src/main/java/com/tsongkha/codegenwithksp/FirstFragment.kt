@@ -32,6 +32,11 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val foo = Foo(2, 2)
+        val sum = foo.x + foo.y
+
+        binding.textviewFirst.text = "Sum of $foo is: $sum"
+
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }

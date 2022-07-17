@@ -51,7 +51,7 @@ dependencies {
 
 kotlin {
     sourceSets {
-        debug.kotlin.srcDirs += 'build/generated/ksp/main/kotlin'
-        release.kotlin.srcDirs += 'build/generated/ksp/test/kotlin'
+        debug.kotlin.srcDirs += 'build/generated/ksp/debug/kotlin'
+        release.kotlin.srcDirs += 'build/generated/ksp/release/kotlin'
     }
 }
