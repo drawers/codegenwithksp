@@ -33,7 +33,7 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val foo = Foo(2, 2)
-        val sum = foo.x + foo.y
+        val sum = foo.sum()
 
         binding.textviewFirst.text = "Sum of $foo is: $sum"
 
