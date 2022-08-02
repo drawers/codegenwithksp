@@ -7,6 +7,7 @@ import org.intellij.lang.annotations.Language
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import java.io.File
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class IntSummableProcessorTest {
@@ -15,12 +16,43 @@ class IntSummableProcessorTest {
     @JvmField
     val temporaryFolder: TemporaryFolder = TemporaryFolder()
 
+    @Test
+    fun test() {
+        val source = SourceFile.kotlin(
+            "Foo.kt",
+            """
+            import com.tsongkha.annotation.IntSummable
+            @IntSummable
+            data class Foo(
+                val x: Int,
+                val y: Int,
+                val z: String,
+            )
+
+            val Foo.xy = 3
+        """.trimIndent()
+        )
+
+        val compilation = prepareCompilation(source)
+        val result = compilation.compile()
+
+        assertSourceEquals(
+
+            """
+import kotlin.Int
+
+public fun Foo.sum(): Int = x + y
+""".trimIndent(),
+            compilation.generatedSourceFor("FooExt.kt")
+        )
+    }
+
     private fun prepareCompilation(vararg sourceFiles: SourceFile): KotlinCompilation {
         return KotlinCompilation()
             .apply {
                 workingDir = temporaryFolder.root
                 inheritClassPath = true
-                symbolProcessorProviders = TODO()
+                symbolProcessorProviders = listOf(IntSummableProcessorProvider())
                 sources = sourceFiles.asList()
                 verbose = false
             }
